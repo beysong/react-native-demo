@@ -1,7 +1,7 @@
 import getStore from "./store";
 
 const { store } = getStore();
-const API_HOST = "http://ceshi.wehome.net.cn";
+const API_HOST = "https://httpbin.org";
 /**
  * 请求头
  * @type {{Accept: string, Content-Type: string}}

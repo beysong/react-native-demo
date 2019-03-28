@@ -26,13 +26,5 @@ package-lock.json
 .history
 *.log
 
-functions/mock
-.temp/**
-
-# umi
-.umi
-.umi-production
-
-# screenshot
-screenshot
-.firebase
+# expo
+/.expo

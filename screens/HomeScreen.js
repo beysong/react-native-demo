@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Image, Platform, StyleSheet, ScrollView } from "react-native";
 import { WebBrowser } from "expo";
 import {
   Container,
@@ -15,42 +7,209 @@ import {
   Header,
   Left,
   Body,
+  Badge,
   Right,
   Title,
-  Icon
+  Icon,
+  DeckSwiper,
+  Card,
+  CardItem,
+  Thumbnail,
+  Item,
+  Button,
+  Input,
+  H1,
+  View,
+  Text
 } from "native-base";
 import { Col, Row, Grid } from "react-native-easy-grid";
 
 import { MonoText } from "../components/StyledText";
-
+const cards = [
+  {
+    text: "Card One",
+    name: "One",
+    image: require("../assets/images/slider1.jpg")
+  },
+  {
+    text: "Card One2",
+    name: "One2",
+    image: require("../assets/images/slider2.jpg")
+  }
+];
 const allDemo = [
-  { icon: "airplane", name: "Button1", routeName: "Button" },
-  { icon: "airplane", name: "Button2", routeName: "Button" },
+  { icon: "airplane", name: "Button", routeName: "ButtonDemo" },
+  { icon: "airplane", name: "DemoIndex", routeName: "DemoIndex" },
   { icon: "airplane", name: "Button3", routeName: "Button" },
   { icon: "airplane", name: "Button4", routeName: "Button" },
   { icon: "airplane", name: "Button5", routeName: "Button" },
-  { icon: "airplane", name: "Button6", routeName: "Button" }
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" },
+  { icon: "airplane", name: "Button5", routeName: "Button" }
 ];
 export default class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      opacity: 1,
+      headerStatus: 1
+    };
+  }
+
   static navigationOptions = {
     header: null
   };
+  toDemo(r) {
+    this.props.navigation.navigate(r);
+  }
   render() {
     return (
       <Container>
-        <Header>
-          <Left />
-          <Body>
-            <Title>Home</Title>
-          </Body>
-          <Right />
-        </Header>
-        <Content>
-          <Grid>
+        {this.state.headerStatus ? (
+          <Header
+            transparent
+            searchBar
+            rounded
+            style={{ opacity: this.state.opacity }}
+          >
+            <Item>
+              <Icon name="ios-search" />
+              <Input placeholder="搜索" />
+              <Icon name="ios-people" />
+            </Item>
+            <Button transparent>
+              <Text>搜索</Text>
+            </Button>
+          </Header>
+        ) : (
+          <Header>
+            <Left>
+              <Button transparent>
+                <Icon name="search" />
+              </Button>
+            </Left>
+            <Body>
+              <Title>首页</Title>
+            </Body>
+            <Right>
+              <Button transparent>
+                <Badge
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                    height: 18
+                  }}
+                >
+                  <Text style={{ lineHeight: 12, fontSize: 12 }}>2</Text>
+                </Badge>
+                <Icon name="mail" />
+              </Button>
+            </Right>
+          </Header>
+        )}
+        <Content
+          scrollEventThrottle={30}
+          onScroll={e => {
+            console.log(333, e.nativeEvent.contentOffset.y);
+            let yyyyy = e.nativeEvent.contentOffset.y;
+            let temp = (150 - (yyyyy > 150 ? 150 : yyyyy)) / 150;
+            let headerStatus;
+            if (yyyyy > 100) {
+              headerStatus = 0;
+            } else {
+              headerStatus = 1;
+            }
+            this.setState({
+              opacity: temp,
+              headerStatus
+            });
+          }}
+        >
+          <View style={{ minHeight: 450 }}>
+            <DeckSwiper
+              ref={c => (this._deckSwiper = c)}
+              dataSource={cards}
+              renderEmpty={() => (
+                <View style={{ alignSelf: "center" }}>
+                  <Text>Over</Text>
+                </View>
+              )}
+              renderItem={item => (
+                <Card style={{ elevation: 3 }}>
+                  <CardItem>
+                    <Left>
+                      <Thumbnail source={item.image} />
+                      <Body>
+                        <Text>{item.text}</Text>
+                        <Text note>NativeBase</Text>
+                      </Body>
+                    </Left>
+                  </CardItem>
+                  <CardItem cardBody>
+                    <Image
+                      style={{ height: 300, flex: 1 }}
+                      source={item.image}
+                    />
+                  </CardItem>
+                  <CardItem>
+                    <Icon name="heart" style={{ color: "#ED4A6A" }} />
+                    <Text>{item.name}</Text>
+                  </CardItem>
+                </Card>
+              )}
+            />
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{
+              // backgroundColor: "pink",
+              padding: 10
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6].map(v => (
+              <View
+                key={v}
+                style={{ backgroundColor: "gray", padding: 10, margin: 10 }}
+              >
+                <Text>banner {v}</Text>
+              </View>
+            ))}
+            <View style={{ width: 10 }} />
+          </ScrollView>
+          <View style={{ padding: 10 }}>
+            <Button>
+              <Text>ffff asdf asfd</Text>
+            </Button>
+            <Text>ffff asdf asfd</Text>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+            <H1>Header One</H1>
+          </View>
+          {/* <Grid>
             {(() => {
               let con = [];
               let j = 0;
-              let color1 = "#635DB7";
+              let color1 = "#f7f7f7";
               let color2 = "#00CE9F";
               for (let i = 0; i < allDemo.length; i += 4) {
                 if (j % 2) {
@@ -60,23 +219,41 @@ export default class HomeScreen extends React.Component {
                 }
                 j++;
                 con.push(
-                  <Row key={i} style={{ backgroundColor: "#635DB7" }}>
+                  <Row key={i}>
                     <Grid>
                       <Col
+                        onPress={() => {
+                          console.log("sdsdsdf");
+                          this.toDemo(allDemo[i].routeName);
+                        }}
                         style={{
                           backgroundColor: i % 2 ? color1 : color2
                         }}
                       >
-                        <Icon active name={allDemo[i].icon} />
-                        <Text>{allDemo[i].name || ""}</Text>
+                        <View
+                          style={{ alignItems: "center", paddingVertical: 20 }}
+                        >
+                          <Icon active name={allDemo[i].icon} />
+                          <Text>{allDemo[i].name || ""}</Text>
+                        </View>
                       </Col>
                       <Col
+                        onPress={() => {
+                          if (i + 1 < allDemo.length) {
+                            this.toDemo(allDemo[i + 1].routeName);
+                          }
+                        }}
                         style={{
                           backgroundColor: (i + 1) % 2 ? color1 : color2
                         }}
                       >
                         {i + 1 < allDemo.length ? (
-                          <View>
+                          <View
+                            style={{
+                              alignItems: "center",
+                              paddingVertical: 20
+                            }}
+                          >
                             <Icon active name={allDemo[i + 1].icon} />
                             <Text>{allDemo[i + 1].name || ""}</Text>
                           </View>
@@ -85,12 +262,22 @@ export default class HomeScreen extends React.Component {
                         )}
                       </Col>
                       <Col
+                        onPress={() => {
+                          if (i + 2 < allDemo.length) {
+                            this.toDemo(allDemo[i + 2].routeName);
+                          }
+                        }}
                         style={{
                           backgroundColor: (i + 2) % 2 ? color1 : color2
                         }}
                       >
                         {i + 2 < allDemo.length ? (
-                          <View>
+                          <View
+                            style={{
+                              alignItems: "center",
+                              paddingVertical: 20
+                            }}
+                          >
                             <Icon active name={allDemo[i + 2].icon} />
                             <Text>{allDemo[i + 2].name || ""}</Text>
                           </View>
@@ -99,12 +286,22 @@ export default class HomeScreen extends React.Component {
                         )}
                       </Col>
                       <Col
+                        onPress={() => {
+                          if (i + 3 < allDemo.length) {
+                            this.toDemo(allDemo[i + 3].routeName);
+                          }
+                        }}
                         style={{
                           backgroundColor: (i + 3) % 2 ? color1 : color2
                         }}
                       >
                         {i + 3 < allDemo.length ? (
-                          <View>
+                          <View
+                            style={{
+                              alignItems: "center",
+                              paddingVertical: 20
+                            }}
+                          >
                             <Icon active name={allDemo[i + 3].icon} />
                             <Text>{allDemo[i + 3].name || ""}</Text>
                           </View>
@@ -118,40 +315,6 @@ export default class HomeScreen extends React.Component {
               }
               return con;
             })()}
-          </Grid>
-          {/* <Grid>
-            <Col style={{ backgroundColor: "#635DB7" }}>
-              <Grid>
-                <Row style={{ backgroundColor: "#00CE9F" }} />
-                <Row style={{ backgroundColor: "#635DB7" }} />
-                <Row style={{ backgroundColor: "#00CE9F" }} />
-                <Row style={{ backgroundColor: "#635DB7" }} />
-              </Grid>
-            </Col>
-            <Col style={{ backgroundColor: "#00CE9F" }}>
-              <Grid>
-                <Row style={{ backgroundColor: "#635DB7", height: 60 }} />
-                <Row style={{ backgroundColor: "#00CE9F", height: 60 }} />
-                <Row style={{ backgroundColor: "#635DB7", height: 60 }} />
-                <Row style={{ backgroundColor: "#00CE9F", height: 60 }} />
-              </Grid>
-            </Col>
-            <Col style={{ backgroundColor: "#635DB7" }}>
-              <Grid>
-                <Row style={{ backgroundColor: "#00CE9F", height: 60 }} />
-                <Row style={{ backgroundColor: "#635DB7", height: 60 }} />
-                <Row style={{ backgroundColor: "#00CE9F", height: 60 }} />
-                <Row style={{ backgroundColor: "#635DB7", height: 60 }} />
-              </Grid>
-            </Col>
-            <Col style={{ backgroundColor: "#00CE9F" }}>
-              <Grid>
-                <Row style={{ backgroundColor: "#635DB7", height: 60 }} />
-                <Row style={{ backgroundColor: "#00CE9F", height: 60 }} />
-                <Row style={{ backgroundColor: "#635DB7", height: 60 }} />
-                <Row style={{ backgroundColor: "#00CE9F", height: 60 }} />
-              </Grid>
-            </Col>
           </Grid> */}
         </Content>
 
